@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Lumina – Design Studio Landing Page</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --fg: #f0eee8;
+    --accent: #7c6dfa;
+    --accent2: #fa6d8f;
+    --card-bg: #13131a;
+    --border: rgba(255,255,255,0.08);
+    --muted: rgba(240,238,232,0.45);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg); color: var(--fg);
+    font-family: 'Epilogue', sans-serif;
+    font-weight: 300; overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 6vw;
+    border-bottom: 1px solid var(--border);
+    background: rgba(10,10,15,0.8); backdrop-filter: blur(16px);
+  }
+  .logo {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: 1.5rem; letter-spacing: -0.04em; color: var(--fg);
+    text-decoration: none;
+  }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); font-size: 0.88rem; text-decoration: none;
+    letter-spacing: 0.04em; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--fg); }
+  .nav-cta {
+    padding: 0.6rem 1.5rem; border-radius: 50px;
+    background: var(--accent); color: white;
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: 0.85rem; text-decoration: none; transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh; padding: 160px 6vw 100px;
+    display: flex; flex-direction: column;
+    align-items: center; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 600px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,109,250,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-glow2 {
+    position: absolute; top: 30%; left: 30%;
+    width: 400px; height: 400px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(250,109,143,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.4rem 1rem; border-radius: 50px;
+    border: 1px solid var(--border);
+    background: rgba(124,109,250,0.1);
+    font-size: 0.78rem; letter-spacing: 0.08em; color: var(--accent);
+    margin-bottom: 2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+  .badge::before { content: '●'; font-size: 0.5rem; }
+  .hero-h1 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(3rem, 7vw, 7rem);
+    line-height: 1.0; letter-spacing: -0.04em;
+    max-width: 900px; position: relative; z-index: 1;
+    animation: fadeUp 0.5s 0.1s ease both;
+  }
+  .hero-h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-sub {
+    max-width: 520px; margin-top: 1.8rem;
+    color: var(--muted); font-size: 1.05rem; line-height: 1.8;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.5s 0.2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; margin-top: 2.8rem; flex-wrap: wrap; justify-content: center;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.5s 0.3s ease both;
+  }
+  .btn-grad {
+    padding: 0.9rem 2.2rem; border-radius: 50px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white; font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: 0.9rem; text-decoration: none; cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .btn-grad:hover { opacity: 0.9; transform: scale(1.03); }
+  .btn-ghost {
+    padding: 0.9rem 2.2rem; border-radius: 50px;
+    border: 1px solid var(--border); color: var(--fg);
+    font-family: 'Syne', sans-serif; font-weight: 600;
+    font-size: 0.9rem; text-decoration: none; cursor: pointer;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); transform: scale(1.03); }
+
+  /* Mockup strip */
+  .hero-mockup {
+    margin-top: 5rem; width: 100%; max-width: 860px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.5s 0.4s ease both;
+  }
+  .mockup-bar {
+    display: flex; gap: 6px; padding: 0.8rem 1.2rem;
+    background: var(--card-bg); border-radius: 12px 12px 0 0;
+    border: 1px solid var(--border); border-bottom: none;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .d1 { background: #ff5f57; } .d2 { background: #febc2e; } .d3 { background: #28c840; }
+  .mockup-body {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 0 0 12px 12px; padding: 2rem;
+    display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; min-height: 200px;
+  }
+  .mockup-sidebar { display: flex; flex-direction: column; gap: 0.8rem; }
+  .mock-line {
+    height: 10px; border-radius: 4px;
+    background: rgba(255,255,255,0.06);
+  }
+  .mock-line.accent { background: rgba(124,109,250,0.3); width: 70%; }
+  .mock-line.short { width: 55%; }
+  .mockup-main { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .mock-card {
+    background: rgba(255,255,255,0.04); border-radius: 8px;
+    border: 1px solid var(--border); padding: 1rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .mock-card-icon {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+  }
+
+  /* ── LOGOS ── */
+  .logos { padding: 3rem 6vw; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .logos-label { text-align: center; font-size: 0.75rem; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; margin-bottom: 2rem; }
+  .logos-row { display: flex; justify-content: center; align-items: center; gap: 3.5rem; flex-wrap: wrap; }
+  .brand { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; color: rgba(255,255,255,0.2); letter-spacing: -0.02em; }
+
+  /* ── FEATURES ── */
+  #features { padding: 7rem 6vw; }
+  .feat-header { text-align: center; margin-bottom: 4rem; }
+  .section-chip {
+    display: inline-block; font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid rgba(124,109,250,0.3);
+    padding: 0.3rem 0.9rem; border-radius: 50px; margin-bottom: 1.2rem;
+  }
+  .section-h2 {
+    font-family: 'Syne', sans-serif; font-weight: 800;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    letter-spacing: -0.03em; line-height: 1.1;
+  }
+  .section-sub { color: var(--muted); margin-top: 0.8rem; font-size: 1rem; max-width: 480px; margin-left: auto; margin-right: auto; }
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; }
+  .feat-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .feat-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .feat-emoji { font-size: 2rem; margin-bottom: 1rem; }
+  .feat-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: 0.6rem; }
+  .feat-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
+
+  /* ── PRICING ── */
+  #pricing { padding: 7rem 6vw; background: rgba(124,109,250,0.04); border-top: 1px solid var(--border); }
+  .price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; margin-top: 4rem; max-width: 900px; margin-left: auto; margin-right: auto; }
+  .price-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px; padding: 2.2rem;
+    position: relative; transition: transform 0.3s;
+  }
+  .price-card:hover { transform: translateY(-6px); }
+  .price-card.popular { border-color: var(--accent); }
+  .popular-badge {
+    position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: white; font-family: 'Syne', sans-serif;
+    font-weight: 700; font-size: 0.72rem; letter-spacing: 0.08em;
+    padding: 0.3rem 1rem; border-radius: 50px; white-space: nowrap;
+  }
+  .price-plan { font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; }
+  .price-amount { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 3rem; letter-spacing: -0.04em; }
+  .price-amount sup { font-size: 1.2rem; vertical-align: super; }
+  .price-period { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.8rem; }
+  .price-features { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+  .price-features li { display: flex; align-items: center; gap: 0.7rem; font-size: 0.9rem; color: var(--muted); }
+  .price-features li::before { content: '✓'; color: var(--accent); font-weight: 700; }
+
+  /* ── TESTIMONIALS ── */
+  #testimonials { padding: 7rem 6vw; }
+  .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 4rem; }
+  .test-card {
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; padding: 2rem; transition: transform 0.3s;
+  }
+  .test-card:hover { transform: translateY(-4px); }
+  .test-stars { color: #f5c842; font-size: 0.9rem; margin-bottom: 1rem; }
+  .test-text { color: var(--muted); font-size: 0.95rem; line-height: 1.8; margin-bottom: 1.5rem; }
+  .test-author { display: flex; align-items: center; gap: 0.8rem; }
+  .test-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: white; font-size: 1rem;
+  }
+  .test-name { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.9rem; }
+  .test-role { color: var(--muted); font-size: 0.78rem; }
+
+  /* ── CTA ── */
+  #cta {
+    padding: 7rem 6vw; text-align: center;
+    border-top: 1px solid var(--border);
+    position: relative; overflow: hidden;
+  }
+  #cta::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(124,109,250,0.12) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  #cta .section-h2 { max-width: 640px; margin: 0 auto 1.5rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #050508; border-top: 1px solid var(--border);
+    padding: 3rem 6vw;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.2rem; }
+  .footer-logo span { color: var(--accent); }
+  footer p { color: var(--muted); font-size: 0.82rem; }
+  .footer-links { display: flex; gap: 1.8rem; list-style: none; }
+  .footer-links a { color: var(--muted); font-size: 0.82rem; text-decoration: none; }
+  .footer-links a:hover { color: var(--fg); }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .mockup-body { grid-template-columns: 1fr; }
+    footer { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#hero" class="logo">Lumin<span>a</span></a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#testimonials">Reviews</a></li>
+  </ul>
+  <a href="#" class="nav-cta">Get Started</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <span class="badge">Now in Public Beta</span>
+  <h1 class="hero-h1">Design. Build.<br><span class="grad">Launch Faster.</span></h1>
+  <p class="hero-sub">Lumina is the all-in-one design studio that transforms your ideas into stunning web experiences — no code required.</p>
+  <div class="hero-btns">
+    <a href="#" class="btn-grad">Start for Free →</a>
+    <a href="#features" class="btn-ghost">See How It Works</a>
+  </div>
+  <div class="hero-mockup">
+    <div class="mockup-bar">
+      <div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div>
+    </div>
+    <div class="mockup-body">
+      <div class="mockup-sidebar">
+        <div class="mock-line accent"></div>
+        <div class="mock-line"></div><div class="mock-line short"></div>
+        <div class="mock-line"></div><div class="mock-line short"></div>
+        <div class="mock-line"></div><div class="mock-line short"></div>
+      </div>
+      <div class="mockup-main">
+        <div class="mock-card"><div class="mock-card-icon"></div><div class="mock-line"></div><div class="mock-line short"></div></div>
+        <div class="mock-card"><div class="mock-card-icon" style="background:linear-gradient(135deg,#fa6d8f,#f5a623)"></div><div class="mock-line"></div><div class="mock-line short"></div></div>
+        <div class="mock-card"><div class="mock-card-icon" style="background:linear-gradient(135deg,#28c840,#4facfe)"></div><div class="mock-line"></div><div class="mock-line short"></div></div>
+        <div class="mock-card"><div class="mock-card-icon" style="background:linear-gradient(135deg,#febc2e,#7c6dfa)"></div><div class="mock-line"></div><div class="mock-line short"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOGOS -->
+<div class="logos reveal">
+  <p class="logos-label">Trusted by teams at</p>
+  <div class="logos-row">
+    <span class="brand">Dropbox</span><span class="brand">Spotify</span>
+    <span class="brand">Notion</span><span class="brand">Figma</span><span class="brand">Vercel</span>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="feat-header reveal">
+    <span class="section-chip">Features</span>
+    <h2 class="section-h2">Everything you need<br>to ship great work</h2>
+    <p class="section-sub">A complete toolkit for modern design teams, from concept to deployment.</p>
+  </div>
+  <div class="feat-grid">
+    <div class="feat-card reveal"><div class="feat-emoji">⚡</div><h3 class="feat-title">Lightning Fast</h3><p class="feat-desc">Build and preview in real-time with zero lag. Our engine processes changes instantly.</p></div>
+    <div class="feat-card reveal"><div class="feat-emoji">🎨</div><h3 class="feat-title">Design Tokens</h3><p class="feat-desc">Maintain consistent styles across your entire project with a global token system.</p></div>
+    <div class="feat-card reveal"><div class="feat-emoji">📱</div><h3 class="feat-title">Responsive by Default</h3><p class="feat-desc">Every layout adapts beautifully to any screen size, automatically.</p></div>
+    <div class="feat-card reveal"><div class="feat-emoji">🤝</div><h3 class="feat-title">Team Collaboration</h3><p class="feat-desc">Work together in real-time with live cursors, comments, and version history.</p></div>
+    <div class="feat-card reveal"><div class="feat-emoji">🔌</div><h3 class="feat-title">100+ Integrations</h3><p class="feat-desc">Connect with GitHub, Slack, Figma, and all your favourite developer tools.</p></div>
+    <div class="feat-card reveal"><div class="feat-emoji">🛡️</div><h3 class="feat-title">Enterprise Security</h3><p class="feat-desc">SOC2 Type II certified with SSO, audit logs, and role-based access control.</p></div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="feat-header reveal">
+    <span class="section-chip">Pricing</span>
+    <h2 class="section-h2">Simple, transparent pricing</h2>
+    <p class="section-sub">No hidden fees. Cancel anytime.</p>
+  </div>
+  <div class="price-grid">
+    <div class="price-card reveal">
+      <p class="price-plan">Starter</p>
+      <div class="price-amount"><sup>$</sup>0</div>
+      <p class="price-period">Free forever</p>
+      <ul class="price-features">
+        <li>3 Projects</li><li>Basic components</li><li>Community support</li>
+      </ul>
+      <a href="#" class="btn-ghost" style="display:block;text-align:center;border-radius:8px;padding:0.85rem">Get Started</a>
+    </div>
+    <div class="price-card popular reveal">
+      <span class="popular-badge">Most Popular</span>
+      <p class="price-plan">Pro</p>
+      <div class="price-amount"><sup>$</sup>29</div>
+      <p class="price-period">per month</p>
+      <ul class="price-features">
+        <li>Unlimited Projects</li><li>Advanced components</li><li>Priority support</li><li>Custom domains</li>
+      </ul>
+      <a href="#" class="btn-grad" style="display:block;text-align:center;border-radius:8px;padding:0.85rem">Start Pro Trial</a>
+    </div>
+    <div class="price-card reveal">
+      <p class="price-plan">Team</p>
+      <div class="price-amount"><sup>$</sup>79</div>
+      <p class="price-period">per month</p>
+      <ul class="price-features">
+        <li>Everything in Pro</li><li>5 Team members</li><li>Analytics dashboard</li><li>SSO & audit logs</li>
+      </ul>
+      <a href="#" class="btn-ghost" style="display:block;text-align:center;border-radius:8px;padding:0.85rem">Contact Sales</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="feat-header reveal">
+    <span class="section-chip">Reviews</span>
+    <h2 class="section-h2">Loved by 10,000+ teams</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Lumina cut our design-to-launch time in half. Absolutely game-changing for our startup."</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#7c6dfa,#fa6d8f)">S</div>
+        <div><div class="test-name">Sara Patel</div><div class="test-role">CEO, NovaTech</div></div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"The collaboration features are unreal. Our remote team finally feels in sync."</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#28c840,#4facfe)">M</div>
+        <div><div class="test-name">Marcus Lee</div><div class="test-role">Lead Designer, Craft Co.</div></div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <div class="test-stars">★★★★★</div>
+      <p class="test-text">"Best investment we made this year. Our clients are always wowed by the results."</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:linear-gradient(135deg,#febc2e,#ff5f57)">R</div>
+        <div><div class="test-name">Riya Mehta</div><div class="test-role">Freelance Designer</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <span class="section-chip reveal">Get Started Today</span>
+  <h2 class="section-h2 reveal">Ready to build something<br>extraordinary?</h2>
+  <div class="hero-btns reveal" style="margin-top:2rem">
+    <a href="#" class="btn-grad">Start Free Trial →</a>
+    <a href="#" class="btn-ghost">Schedule a Demo</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-logo">Lumin<span>a</span></span>
+  <p>© 2026 Lumina Inc. All rights reserved. Built for CodSoft Internship.</p>
+  <ul class="footer-links">
+    <li><a href="#">Privacy</a></li><li><a href="#">Terms</a></li><li><a href="#">Contact</a></li>
+  </ul>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(entries => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 100);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+</script>
+</body>
+</html>
