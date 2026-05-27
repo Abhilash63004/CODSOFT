@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Email Template – CodSoft UI/UX Task 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+body { background:#f0ece6; font-family:'Outfit',sans-serif; margin:0; padding:2rem 1rem; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
+.page-label { font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:#999; margin-bottom:2rem; text-align:center; }
+.email-client { width:100%; max-width:680px; background:white; border-radius:16px; box-shadow:0 4px 6px rgba(0,0,0,0.04),0 20px 60px rgba(0,0,0,0.08); overflow:hidden; }
+.client-bar { background:#f5f3f0; border-bottom:1px solid #e8e4de; padding:1rem 1.5rem; display:flex; align-items:center; gap:1rem; }
+.client-dots span { display:inline-block; width:12px; height:12px; border-radius:50%; margin-right:6px; }
+.r{background:#ff5f57}.y{background:#febc2e}.g{background:#28c840}
+.client-bar input { flex:1; border:1px solid #e0dbd3; border-radius:8px; padding:0.4rem 0.8rem; font-size:0.8rem; color:#888; background:white; outline:none; }
+.preview-tabs { display:flex; background:white; border-bottom:1px solid #e8e4de; padding:0 1.5rem; }
+.preview-tab { padding:0.7rem 1.2rem; font-size:0.8rem; color:#999; border-bottom:2px solid transparent; cursor:pointer; }
+.preview-tab.active { color:#1c2b1a; border-bottom-color:#84c259; }
+.email-wrap { background:#f7f4ef; padding:2.5rem 2rem; }
+.email-card { background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 20px rgba(0,0,0,0.06); }
+.email-header { background:#1c2b1a; padding:3rem 2.5rem 2rem; position:relative; overflow:hidden; }
+.email-header::before { content:''; position:absolute; top:-60px; right:-60px; width:220px; height:220px; border-radius:50%; background:radial-gradient(circle,rgba(132,194,89,0.2),transparent 70%); }
+.email-logo { display:flex; align-items:center; gap:0.7rem; margin-bottom:2.5rem; }
+.logo-icon { width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg,#84c259,#4a9c2a); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+.logo-name { font-family:'Cormorant Garamond',serif; font-size:1.3rem; color:white; font-weight:600; letter-spacing:0.04em; }
+.header-tag { display:inline-block; font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:#84c259; border:1px solid rgba(132,194,89,0.4); border-radius:4px; padding:0.25rem 0.7rem; margin-bottom:1rem; }
+.header-h1 { font-family:'Cormorant Garamond',serif; font-size:2.6rem; color:white; line-height:1.1; font-weight:600; position:relative; z-index:1; margin-bottom:0.5rem; }
+.header-h1 em { color:#84c259; font-style:italic; }
+.header-sub { color:rgba(255,255,255,0.55); font-size:0.9rem; line-height:1.6; position:relative; z-index:1; }
+.hero-strip { background:linear-gradient(135deg,#2d4a1e,#1c2b1a); padding:0.5rem 2.5rem; display:flex; gap:0.5rem; }
+.hero-thumb { flex:1; height:90px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:2rem; }
+.hero-thumb.t1{background:rgba(132,194,89,0.15)}.hero-thumb.t2{background:rgba(255,255,255,0.06)}.hero-thumb.t3{background:rgba(132,194,89,0.08)}
+.email-content { padding:2.5rem; }
+.greeting { font-family:'Cormorant Garamond',serif; font-size:1.4rem; color:#1c2b1a; margin-bottom:0.6rem; }
+.email-p { font-size:0.92rem; color:#555; line-height:1.85; margin-bottom:1.5rem; }
+.feature-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:1rem; margin:2rem 0; }
+.feat-item { background:#f7f4ef; border-radius:10px; padding:1.2rem 1rem; text-align:center; }
+.feat-icon { font-size:1.6rem; margin-bottom:0.5rem; }
+.feat-label { font-size:0.8rem; font-weight:500; color:#1c2b1a; margin-bottom:0.2rem; }
+.feat-desc { font-size:0.72rem; color:#999; line-height:1.5; }
+.email-divider { border:none; border-top:1px solid #f0ece6; margin:1.8rem 0; }
+.promo-block { background:linear-gradient(135deg,#1c2b1a,#2d4a1e); border-radius:12px; padding:2rem; text-align:center; margin:1.5rem 0; }
+.promo-label { font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:rgba(132,194,89,0.7); margin-bottom:0.5rem; }
+.promo-code { font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:600; color:white; letter-spacing:0.08em; margin-bottom:0.3rem; }
+.promo-sub { color:rgba(255,255,255,0.5); font-size:0.82rem; }
+.promo-expires { color:#84c259; font-size:0.78rem; margin-top:0.8rem; }
+.cta-wrap { text-align:center; margin:2rem 0; }
+.cta-btn { display:inline-block; padding:1rem 2.8rem; background:#1c2b1a; color:white; border-radius:50px; font-size:0.9rem; font-weight:500; text-decoration:none; letter-spacing:0.04em; }
+.testimonial { border-left:3px solid #84c259; padding:1rem 1.5rem; margin:1.5rem 0; background:#f7f4ef; border-radius:0 8px 8px 0; }
+.testimonial-text { font-family:'Cormorant Garamond',serif; font-size:1.05rem; color:#2d4a1e; font-style:italic; line-height:1.6; margin-bottom:0.5rem; }
+.testimonial-author { font-size:0.78rem; color:#999; }
+.social-strip { display:flex; justify-content:center; gap:0.8rem; margin:1.5rem 0; }
+.social-icon { width:36px; height:36px; border-radius:50%; background:#f0ece6; display:flex; align-items:center; justify-content:center; font-size:0.9rem; text-decoration:none; }
+.email-footer { background:#f7f4ef; border-top:1px solid #f0ece6; padding:2rem 2.5rem; text-align:center; }
+.footer-logo { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:#1c2b1a; font-weight:600; margin-bottom:0.8rem; }
+.footer-links { display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap; margin-bottom:1rem; }
+.footer-links a { font-size:0.78rem; color:#84c259; text-decoration:none; }
+.footer-p { font-size:0.72rem; color:#aaa; line-height:1.7; }
+.unsubscribe { color:#84c259; text-decoration:none; }
+@media(max-width:500px){.feature-grid{grid-template-columns:1fr}.header-h1{font-size:1.8rem}}
+</style>
+</head>
+<body>
+<p class="page-label">CodSoft UI/UX Internship · Task 2 · Email Template</p>
+<div class="email-client">
+  <div class="client-bar">
+    <div class="client-dots"><span class="r"></span><span class="y"></span><span class="g"></span></div>
+    <input type="text" value="🌿 Your Bloom monthly wellness recap is here — May 2026"/>
+  </div>
+  <div class="preview-tabs">
+    <div class="preview-tab active">📧 Email Preview</div>
+    <div class="preview-tab">📱 Mobile</div>
+    <div class="preview-tab">📊 Stats</div>
+  </div>
+  <div class="email-wrap">
+    <div class="email-card">
+      <div class="email-header">
+        <div class="email-logo">
+          <div class="logo-icon">🌿</div>
+          <span class="logo-name">Bloom</span>
+        </div>
+        <span class="header-tag">Monthly Recap · May 2026</span>
+        <h1 class="header-h1">You're on a<br><em>30-day streak.</em><br>Keep it up! 🔥</h1>
+        <p class="header-sub">Here's a look at your wellness journey this month.</p>
+      </div>
+      <div class="hero-strip">
+        <div class="hero-thumb t1">🧘</div>
+        <div class="hero-thumb t2">💪</div>
+        <div class="hero-thumb t3">😴</div>
+      </div>
+      <div class="email-content">
+        <p class="greeting">Hey Alex! 👋</p>
+        <p class="email-p">What a month it's been. You've been incredibly consistent with your wellness routines, and it shows. Below is a snapshot of your progress — we're genuinely proud of the work you're putting in.</p>
+        <div class="feature-grid">
+          <div class="feat-item"><div class="feat-icon">🧘</div><div class="feat-label">24 Sessions</div><div class="feat-desc">Mindfulness & meditation completed</div></div>
+          <div class="feat-item"><div class="feat-icon">💧</div><div class="feat-label">92% Days</div><div class="feat-desc">Hydration goal hit consistently</div></div>
+          <div class="feat-item"><div class="feat-icon">😴</div><div class="feat-label">7.4h Avg</div><div class="feat-desc">Quality sleep per night</div></div>
+        </div>
+        <hr class="email-divider"/>
+        <p class="email-p">Your consistency has placed you in the <strong style="color:#1c2b1a">top 12% of Bloom users</strong> this month. Here's an exclusive offer to celebrate:</p>
+        <div class="promo-block">
+          <div class="promo-label">Exclusive offer for you</div>
+          <div class="promo-code">BLOOM30</div>
+          <div class="promo-sub">30% off Bloom Premium — unlock advanced analytics, sleep coaching &amp; more</div>
+          <div class="promo-expires">⏰ Expires June 3, 2026</div>
+        </div>
+        <div class="cta-wrap"><a href="#" class="cta-btn">Claim Your Discount →</a></div>
+        <hr class="email-divider"/>
+        <div class="testimonial">
+          <div class="testimonial-text">"Bloom completely changed my mornings. I've never felt more in control of my health."</div>
+          <div class="testimonial-author"><strong>Priya M.</strong> · Bloom user since 2025 ⭐⭐⭐⭐⭐</div>
+        </div>
+        <p class="email-p">Next month, we're rolling out <strong style="color:#1c2b1a">personalised AI coaching</strong> based on your habit data. Stay consistent and be among the first to try it.</p>
+        <div class="cta-wrap"><a href="#" class="cta-btn" style="background:#f7f4ef;color:#1c2b1a;border:1px solid #e0dbd3">View Full Report</a></div>
+      </div>
+      <div style="text-align:center;padding:0 2.5rem 1rem">
+        <p style="font-size:0.8rem;color:#bbb;margin-bottom:1rem">Share your streak</p>
+        <div class="social-strip">
+          <a href="#" class="social-icon">𝕏</a>
+          <a href="#" class="social-icon">in</a>
+          <a href="#" class="social-icon">f</a>
+          <a href="#" class="social-icon">📸</a>
+        </div>
+      </div>
+      <div class="email-footer">
+        <div class="footer-logo">🌿 Bloom Wellness</div>
+        <div class="footer-links">
+          <a href="#">My Account</a><a href="#">Help Centre</a>
+          <a href="#">Privacy Policy</a><a href="#">Unsubscribe</a>
+        </div>
+        <p class="footer-p">
+          You're receiving this because you opted in to monthly wellness summaries.<br>
+          Bloom Inc. · 42 Wellness Lane · Bangalore, India<br><br>
+          <a href="#" class="unsubscribe">Unsubscribe</a> · <a href="#" class="unsubscribe">Manage Preferences</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
