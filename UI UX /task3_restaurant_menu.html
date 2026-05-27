@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Restaurant Menu – CodSoft UI/UX Task 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #fdf8f0;
+  --surface: #fff9f0;
+  --ink: #1a1006;
+  --gold: #c8922a;
+  --gold-light: #f5e6c8;
+  --rust: #8b3a1a;
+  --sage: #4a6741;
+  --muted: #7a6a52;
+  --border: #ede3d0;
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family:'Jost',sans-serif; font-weight:300; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--ink);
+  min-height: 320px; position: relative; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 3rem 2rem;
+}
+.hero-texture {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(255,255,255,0.015) 30px, rgba(255,255,255,0.015) 31px);
+}
+.hero-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 500px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(200,146,42,0.2), transparent 70%);
+  pointer-events: none;
+}
+.resto-badge {
+  display: inline-flex; align-items: center; gap: 0.6rem;
+  border: 1px solid rgba(200,146,42,0.4); border-radius: 4px;
+  padding: 0.35rem 1rem; font-size: 0.72rem; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+  position: relative; z-index: 1;
+}
+.hero-name {
+  font-family: 'Libre Baskerville', serif;
+  font-size: clamp(2.5rem, 6vw, 5rem); color: #fdf8f0;
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -0.02em; position: relative; z-index: 1;
+}
+.hero-name em { color: var(--gold); font-style: italic; }
+.hero-sub {
+  color: rgba(253,248,240,0.45); font-size: 0.9rem; margin-top: 0.8rem;
+  letter-spacing: 0.08em; position: relative; z-index: 1;
+}
+.hero-meta {
+  display: flex; gap: 2rem; margin-top: 2rem;
+  position: relative; z-index: 1; flex-wrap: wrap; justify-content: center;
+}
+.meta-item { text-align: center; }
+.meta-val { font-family:'Libre Baskerville',serif; font-size:1.1rem; color:var(--gold); }
+.meta-label { font-size:0.72rem; letter-spacing:0.1em; text-transform:uppercase; color:rgba(253,248,240,0.35); }
+.gold-line { width:60px; height:1px; background:var(--gold); margin:1.5rem auto; opacity:0.4; position:relative; z-index:1; }
+
+/* ── STICKY NAV ── */
+.cat-nav {
+  position: sticky; top: 0; z-index: 50; background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  display: flex; gap: 0; overflow-x: auto; padding: 0 2rem;
+  scrollbar-width: none;
+}
+.cat-nav::-webkit-scrollbar { display: none; }
+.cat-btn {
+  padding: 1rem 1.5rem; white-space: nowrap; border: none;
+  background: none; cursor: pointer; font-family:'Jost',sans-serif;
+  font-size: 0.82rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+}
+.cat-btn:hover { color: var(--ink); }
+.cat-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* ── LAYOUT ── */
+.menu-container { max-width: 1100px; margin: 0 auto; padding: 0 2rem 4rem; }
+
+/* ── SECTION HEADER ── */
+.section-header { padding: 3.5rem 0 2rem; display: flex; align-items: center; gap: 1.5rem; }
+.section-num { font-family:'Libre Baskerville',serif; font-size:0.8rem; color:var(--gold); font-style:italic; }
+.section-title { font-family:'Libre Baskerville',serif; font-size:1.8rem; color:var(--ink); }
+.section-line { flex:1; height:1px; background:var(--border); }
+
+/* ── MENU GRID ── */
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+
+/* Featured – full width */
+.item-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 4px; overflow: hidden;
+  transition: box-shadow 0.3s, transform 0.3s;
+  display: flex; flex-direction: column;
+}
+.item-card:hover { box-shadow: 0 12px 40px rgba(0,0,0,0.08); transform: translateY(-3px); }
+.item-card.featured {
+  grid-column: 1 / -1; flex-direction: row; min-height: 200px;
+}
+.item-thumb {
+  height: 180px; display: flex; align-items: center; justify-content: center;
+  font-size: 3rem; position: relative; overflow: hidden;
+}
+.item-card.featured .item-thumb { width: 280px; flex-shrink: 0; height: auto; }
+.thumb-bg1 { background: linear-gradient(135deg, #3d1a0a, #6b2f0f); }
+.thumb-bg2 { background: linear-gradient(135deg, #1a2d0a, #2d4a1e); }
+.thumb-bg3 { background: linear-gradient(135deg, #1a0a2d, #2d1a4a); }
+.thumb-bg4 { background: linear-gradient(135deg, #2d1a0a, #4a2d0f); }
+.thumb-bg5 { background: linear-gradient(135deg, #0a2d1a, #1a4a2d); }
+.thumb-bg6 { background: linear-gradient(135deg, #2d0a1a, #4a1a2d); }
+.thumb-bg7 { background: linear-gradient(135deg, #1a1a0a, #2d2d0f); }
+.thumb-bg8 { background: linear-gradient(135deg, #0a1a2d, #1a2d4a); }
+.chef-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: var(--gold); color: var(--ink);
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem; border-radius: 2px;
+}
+.spicy-badge {
+  position: absolute; top: 10px; right: 10px;
+  background: var(--rust); color: white;
+  font-size: 0.65rem; padding: 0.2rem 0.6rem; border-radius: 2px;
+}
+.new-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: var(--sage); color: white;
+  font-size: 0.65rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 0.2rem 0.6rem; border-radius: 2px;
+}
+.item-body { padding: 1.4rem; flex: 1; display: flex; flex-direction: column; }
+.item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 0.5rem; }
+.item-name { font-family:'Libre Baskerville',serif; font-size:1.05rem; color:var(--ink); line-height:1.3; }
+.item-price {
+  font-family:'Libre Baskerville',serif; font-size:1.1rem; color:var(--gold);
+  white-space: nowrap; font-weight: 700;
+}
+.item-desc { font-size:0.83rem; color:var(--muted); line-height:1.75; flex:1; }
+.item-footer { margin-top:1rem; display:flex; align-items:center; justify-content:space-between; }
+.item-tags { display:flex; gap:0.4rem; flex-wrap:wrap; }
+.tag {
+  font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase;
+  padding:0.15rem 0.5rem; border-radius:2px;
+  background:var(--gold-light); color:var(--rust);
+}
+.tag.veg { background:#e8f0e4; color:var(--sage); }
+.add-btn {
+  width:32px; height:32px; border-radius:50%; border:1px solid var(--border);
+  background:white; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-size:1.2rem; color:var(--gold); transition:all 0.2s; flex-shrink:0;
+}
+.add-btn:hover { background:var(--gold); color:white; border-color:var(--gold); }
+
+/* ── CART TOAST ── */
+.cart-toast {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: var(--ink); color: white;
+  padding: 1rem 1.5rem; border-radius: 8px;
+  font-size: 0.88rem; display: flex; align-items: center; gap: 1rem;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  transform: translateY(100px); opacity: 0; transition: all 0.4s;
+  z-index: 200;
+}
+.cart-toast.show { transform: translateY(0); opacity: 1; }
+.cart-count { background: var(--gold); color: var(--ink); border-radius: 50%; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.85rem; }
+
+/* ── FOOTER ── */
+.menu-footer {
+  background: var(--ink); color: rgba(253,248,240,0.5);
+  text-align: center; padding: 3rem 2rem;
+  font-size: 0.8rem; letter-spacing: 0.06em;
+}
+.menu-footer .foot-name { font-family:'Libre Baskerville',serif; color:var(--gold); font-size:1.2rem; margin-bottom:0.5rem; }
+
+/* ── REVEAL ── */
+.reveal { opacity:0; transform:translateY(20px); transition:opacity 0.6s,transform 0.6s; }
+.reveal.visible { opacity:1; transform:none; }
+
+@media(max-width:640px) {
+  .item-card.featured { flex-direction:column; }
+  .item-card.featured .item-thumb { width:100%; height:180px; }
+  .cat-nav { padding:0 1rem; }
+  .menu-container { padding:0 1rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<div class="hero">
+  <div class="hero-texture"></div>
+  <div class="hero-glow"></div>
+  <span class="resto-badge">✦ Est. 2018 · Ahmedabad</span>
+  <h1 class="hero-name">Casa<em>nova</em></h1>
+  <p class="hero-sub">MODERN INDIAN · WOOD FIRE · SEASONAL MENUS</p>
+  <div class="gold-line"></div>
+  <div class="hero-meta">
+    <div class="meta-item"><div class="meta-val">4.9★</div><div class="meta-label">Rating</div></div>
+    <div class="meta-item"><div class="meta-val">12–11pm</div><div class="meta-label">Hours</div></div>
+    <div class="meta-item"><div class="meta-val">₹800</div><div class="meta-label">For two</div></div>
+    <div class="meta-item"><div class="meta-val">45 min</div><div class="meta-label">Delivery</div></div>
+  </div>
+</div>
+
+<!-- Category Nav -->
+<nav class="cat-nav">
+  <button class="cat-btn active" onclick="scrollTo('starters')">🥗 Starters</button>
+  <button class="cat-btn" onclick="scrollTo('mains')">🍛 Mains</button>
+  <button class="cat-btn" onclick="scrollTo('breads')">🫓 Breads</button>
+  <button class="cat-btn" onclick="scrollTo('desserts')">🍮 Desserts</button>
+  <button class="cat-btn" onclick="scrollTo('drinks')">🥤 Drinks</button>
+</nav>
+
+<div class="menu-container">
+
+  <!-- STARTERS -->
+  <div id="starters">
+    <div class="section-header reveal">
+      <span class="section-num">01</span>
+      <h2 class="section-title">Starters</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+
+      <!-- Featured -->
+      <div class="item-card featured reveal">
+        <div class="item-thumb thumb-bg1">
+          <span class="chef-badge">Chef's Pick</span>
+          🍢
+        </div>
+        <div class="item-body">
+          <div class="item-top">
+            <div class="item-name">Tandoori Smoked Lamb Chops</div>
+            <div class="item-price">₹780</div>
+          </div>
+          <p class="item-desc">Rack of lamb marinated overnight in saffron yoghurt, slow-smoked in our clay tandoor, finished with a black pepper crust and mint chutney gel. Best paired with our house sangria.</p>
+          <div class="item-footer">
+            <div class="item-tags"><span class="tag">Signature</span><span class="tag">Spicy 🌶</span></div>
+            <button class="add-btn" onclick="addToCart(this,'Lamb Chops')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg5">
+          <span class="new-badge">NEW</span>
+          🥬
+        </div>
+        <div class="item-body">
+          <div class="item-top">
+            <div class="item-name">Burrata & Mango Salad</div>
+            <div class="item-price">₹420</div>
+          </div>
+          <p class="item-desc">Fresh Italian burrata, Alphonso mango, micro greens, chilli-lime dressing, crispy lotus seeds.</p>
+          <div class="item-footer">
+            <div class="item-tags"><span class="tag veg">Veg</span><span class="tag">Seasonal</span></div>
+            <button class="add-btn" onclick="addToCart(this,'Burrata Salad')">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg4">🧆</div>
+        <div class="item-body">
+          <div class="item-top">
+            <div class="item-name">Crispy Paneer 65</div>
+            <div class="item-price">₹320</div>
+          </div>
+          <p class="item-desc">Double-fried cottage cheese, curry leaf tempering, yoghurt foam, pomegranate pearls.</p>
+          <div class="item-footer">
+            <div class="item-tags"><span class="tag veg">Veg</span><span class="tag">Popular</span></div>
+            <button class="add-btn" onclick="addToCart(this,'Paneer 65')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAINS -->
+  <div id="mains">
+    <div class="section-header reveal">
+      <span class="section-num">02</span>
+      <h2 class="section-title">Main Course</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg1"><span class="chef-badge">Best Seller</span>🍖</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Dal Makhani Nihari</div><div class="item-price">₹580</div></div>
+          <p class="item-desc">Slow-cooked black lentils, bone marrow butter, charcoal cream, served in a copper handi.</p>
+          <div class="item-footer">
+            <div class="item-tags"><span class="tag veg">Veg</span><span class="tag">Signature</span></div>
+            <button class="add-btn" onclick="addToCart(this,'Dal Makhani')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg3">🐔</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Kashmiri Rogan Josh</div><div class="item-price">₹650</div></div>
+          <p class="item-desc">Heritage recipe lamb curry, whole spices, aged ghee, saffron rice crown. Slow-cooked 6 hours.</p>
+          <div class="item-footer">
+            <div class="item-tags"><span class="tag">Non-Veg</span><span class="tag">Spicy 🌶🌶</span></div>
+            <button class="add-btn" onclick="addToCart(this,'Rogan Josh')">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg2">🥘</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Wild Mushroom Korma</div><div class="item-price">₹490</div></div>
+          <p class="item-desc">Oyster, shiitake & portobello mushrooms, cashew cream, rose petals, served with biryani rice.</p>
+          <div class="item-footer">
+            <div class="item-tags"><span class="tag veg">Veg</span><span class="tag">New</span></div>
+            <button class="add-btn" onclick="addToCart(this,'Mushroom Korma')">+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREADS -->
+  <div id="breads">
+    <div class="section-header reveal">
+      <span class="section-num">03</span>
+      <h2 class="section-title">Breads & Rice</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg7" style="height:130px">🫓</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Stuffed Laccha Paratha</div><div class="item-price">₹120</div></div>
+          <p class="item-desc">Flaky layers, spiced potato & herb filling, tawa-finished with aged butter.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag veg">Veg</span></div><button class="add-btn" onclick="addToCart(this,'Laccha Paratha')">+</button></div>
+        </div>
+      </div>
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg8" style="height:130px">🍚</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Dum Biryani (Half)</div><div class="item-price">₹340</div></div>
+          <p class="item-desc">Aged basmati, saffron milk, fried onions, sealed in dough, dum-cooked 45 minutes.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag">Veg/Non-Veg</span></div><button class="add-btn" onclick="addToCart(this,'Dum Biryani')">+</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DESSERTS -->
+  <div id="desserts">
+    <div class="section-header reveal">
+      <span class="section-num">04</span>
+      <h2 class="section-title">Desserts</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg6"><span class="chef-badge">Chef's Pick</span>🍮</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Mango Phirni Brûlée</div><div class="item-price">₹280</div></div>
+          <p class="item-desc">Traditional phirni meets crème brûlée — caramelised sugar top, Alphonso mango purée, rose crumble.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag veg">Veg</span><span class="tag">Seasonal</span></div><button class="add-btn" onclick="addToCart(this,'Mango Phirni')">+</button></div>
+        </div>
+      </div>
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg4" style="height:160px">🍫</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Dark Chocolate Gulab Halwa</div><div class="item-price">₹240</div></div>
+          <p class="item-desc">Semolina halwa enriched with 70% dark chocolate, edible gold, vanilla ice cream.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag veg">Veg</span></div><button class="add-btn" onclick="addToCart(this,'Choc Halwa')">+</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRINKS -->
+  <div id="drinks">
+    <div class="section-header reveal">
+      <span class="section-num">05</span>
+      <h2 class="section-title">Drinks</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="menu-grid">
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg5" style="height:130px">🥤</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Masala Cold Brew</div><div class="item-price">₹180</div></div>
+          <p class="item-desc">24-hour cold brew, cardamom, cinnamon, star anise, coconut milk foam.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag veg">Veg</span></div><button class="add-btn" onclick="addToCart(this,'Cold Brew')">+</button></div>
+        </div>
+      </div>
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg1" style="height:130px">🍹</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Kala Khatta Sangria</div><div class="item-price">₹320</div></div>
+          <p class="item-desc">House red wine, kokum, raw mango, chaat masala rim, fresh mint. Signature cocktail.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag">Cocktail</span><span class="tag">Signature</span></div><button class="add-btn" onclick="addToCart(this,'Sangria')">+</button></div>
+        </div>
+      </div>
+      <div class="item-card reveal">
+        <div class="item-thumb thumb-bg2" style="height:130px">🫖</div>
+        <div class="item-body">
+          <div class="item-top"><div class="item-name">Kashmiri Kahwa</div><div class="item-price">₹140</div></div>
+          <p class="item-desc">Green tea, saffron, cinnamon, cardamom, crushed almonds. Served in a traditional samovar.</p>
+          <div class="item-footer"><div class="item-tags"><span class="tag veg">Veg</span><span class="tag">Non-Alcoholic</span></div><button class="add-btn" onclick="addToCart(this,'Kahwa')">+</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- menu-container -->
+
+<!-- Cart Toast -->
+<div class="cart-toast" id="cartToast">
+  <span class="cart-count" id="cartCount">1</span>
+  <span id="cartMsg">Added to order</span>
+  <span style="color:var(--gold);cursor:pointer">View →</span>
+</div>
+
+<div class="menu-footer">
+  <div class="foot-name">Casanova</div>
+  <p>Modern Indian · Ahmedabad · ☎ +91 79 4567 8900</p>
+  <p style="margin-top:0.5rem">Built for CodSoft UI/UX Internship · #codsoft</p>
+</div>
+
+<script>
+let cartCount = 0;
+let toastTimer;
+
+function addToCart(btn, name) {
+  cartCount++;
+  btn.textContent = '✓';
+  btn.style.background = 'var(--sage)';
+  btn.style.color = 'white';
+  setTimeout(() => { btn.textContent = '+'; btn.style.background = ''; btn.style.color = ''; }, 1500);
+
+  document.getElementById('cartCount').textContent = cartCount;
+  document.getElementById('cartMsg').textContent = name + ' added!';
+  const toast = document.getElementById('cartToast');
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+}
+
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+}
+
+// Reveal on scroll
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('visible'), i * 80); io.unobserve(e.target); }
+  });
+}, { threshold: 0.05 });
+document.querySelectorAll('.reveal').forEach(r => io.observe(r));
+
+// Active nav on scroll
+const sections = ['starters','mains','breads','desserts','drinks'];
+window.addEventListener('scroll', () => {
+  const btns = document.querySelectorAll('.cat-btn');
+  let current = 0;
+  sections.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 150) current = i;
+  });
+  btns.forEach((b, i) => b.classList.toggle('active', i === current));
+});
+</script>
+</body>
+</html>
